@@ -1,0 +1,7 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/brian/Manim/Math 618/media/videos/ellipse_test/720p30/partial_movie_files/EigenVectors/2016333726_2268332985_631829896.mp4'
+file 'file:C:/Users/brian/Manim/Math 618/media/videos/ellipse_test/720p30/partial_movie_files/EigenVectors/2016333726_2920825726_1465801343.mp4'
+file 'file:C:/Users/brian/Manim/Math 618/media/videos/ellipse_test/720p30/partial_movie_files/EigenVectors/543634251_2315197137_2061105202.mp4'
+file 'file:C:/Users/brian/Manim/Math 618/media/videos/ellipse_test/720p30/partial_movie_files/EigenVectors/543634251_3890345977_1541626198.mp4'
+file 'file:C:/Users/brian/Manim/Math 618/media/videos/ellipse_test/720p30/partial_movie_files/EigenVectors/543634251_2314274231_3191825682.mp4'
+file 'file:C:/Users/brian/Manim/Math 618/media/videos/ellipse_test/720p30/partial_movie_files/EigenVectors/543634251_3890345977_4287142911.mp4'

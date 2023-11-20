@@ -1,2 +1,5 @@
 # This file is used internally by FFMPEG.
-file 'file:C:/Users/brian/Manim/Math 618/media/videos/ellipse_test/720p30/partial_movie_files/Introduction/2016333726_2268332985_346972468.mp4'
+file 'file:C:/Users/brian/Manim/Math 618/media/videos/ellipse_test/720p30/partial_movie_files/Introduction/2016333726_2268332985_631829896.mp4'
+file 'file:C:/Users/brian/Manim/Math 618/media/videos/ellipse_test/720p30/partial_movie_files/Introduction/2016333726_3333740834_2641219898.mp4'
+file 'file:C:/Users/brian/Manim/Math 618/media/videos/ellipse_test/720p30/partial_movie_files/Introduction/543634251_1141282389_1071484169.mp4'
+file 'file:C:/Users/brian/Manim/Math 618/media/videos/ellipse_test/720p30/partial_movie_files/Introduction/543634251_2008566044_2792173376.mp4'

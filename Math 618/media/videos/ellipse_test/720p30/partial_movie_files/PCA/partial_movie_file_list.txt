@@ -1,0 +1,3 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/brian/Manim/Math 618/media/videos/ellipse_test/720p30/partial_movie_files/PCA/2016333726_3312423379_1982170655.mp4'
+file 'file:C:/Users/brian/Manim/Math 618/media/videos/ellipse_test/720p30/partial_movie_files/PCA/543634251_2475379470_631829896.mp4'

@@ -18,7 +18,7 @@ class Introduction(Scene):
 
         # Layout
         ## Table of contents
-        self.play(TitleCards(Tex("Table of contents").shift(3*UP)),TitleCards(Tex("1. Eigenvalues").align_on_border(LEFT).shift(2*UP + 2.5*RIGHT)),TitleCards(Tex("2. Singular Value Decomposition").align_on_border(LEFT).shift(1*UP + 2.5*RIGHT)),TitleCards(Tex("3. Principal Component Analysis.").align_on_border(LEFT ).shift(2.5*RIGHT)),lag_ratio=.5,run_time=10)
+        self.play(TitleCards(Tex("Table of contents").shift(3*UP)),TitleCards(Tex("1. Eigenvalues").align_on_border(LEFT).shift(2*UP + 2.5*RIGHT)),TitleCards(Tex("2. Singular Value Decomposition").align_on_border(LEFT).shift(1*UP + 2.5*RIGHT)),TitleCards(Tex("3. Principal Component Analysis.").align_on_border(LEFT ).shift(2.5*RIGHT)),TitleCards(Tex("4. Kernel PCA").align_on_border(LEFT).shift(-1*UP + 2.5*RIGHT)),lag_ratio=.5,run_time=10)
         ## Method of talking about this
 
 
@@ -53,8 +53,8 @@ class EigenVectors(Scene):
         vect_2 = always_redraw(lambda:Line(start=ellipse_1.get_center(),end=ellipse_1.get_center()+[1.5*np.cos( angle_1.get_value())/2,1.5*np.sin( angle_1.get_value())/2,0]).add_tip())
         # This will be the Matrices that talk about the action
         lamMatrix = always_redraw(lambda:DecimalMatrix([[height_1.get_value(),0],[0,width_1.get_value()]]).shift(2*UP))
-        inputMat = DecimalMatrix([[1],[2]]).next_to(lamMatrix,direction=RIGHT)
-        outputMat = DecimalMatrix([[1],[2]]).next_to(lamMatrix,direction=LEFT)
+        inputMat = Matrix([["v_1^T"],["v_2^T"]]).next_to(lamMatrix,direction=RIGHT)
+        outputMat = Matrix([["v_1"],["v_2"]]).next_to(lamMatrix,direction=LEFT)
         columns = lamMatrix.get_columns()
 
         TempMatrix = MathTex(r"\begin{bmatrix}"
@@ -109,30 +109,60 @@ class SingularValues(Scene):
     # an easy example
     def construct(self):
         ## First a scene where they are introduced
-        self.play(TitleCards(Tex("Singular Value Decomposition").scale(3).shift(2*UP)),run_time=2)
-
+        self.play(TitleCards(Tex("Singular Value Decomposition").scale(2).shift(2*UP)),run_time=2)
+        ax = Axes(
+            x_length=6,
+            y_length=6,
+            axis_config={"include_ticks": False}
+        )
+        orig = ax.get_center()
+        shear = Polygon(orig +[2,1,0], orig +[1,1,0], orig ,orig  +[1,0,0])
+        square = Square(side_length=1,color="blue")
+        square.shift(square.get_left()*LEFT + square.get_bottom()*DOWN)
+        orig_square = square.copy()
+        self.add(ax)
         self.wait(1)
+        self.add(square)
+        self.wait(1)
+        self.play(Rotate(square,angle=PI/4,about_point=ax.get_origin()))
+        self.wait(1)
+        self.play(Rotate(square,angle=-PI/4,about_point=ax.get_origin()))
+        self.wait(1)
+        self.play(Transform(square,shear))
+        self.play(Transform(square,orig_square))
+        self.play(FadeOut(ax,square))
         ## Then a scene where we can go through an easy example involving
         ## rotations and stretches. 
+        self.remove(square,shear,ax,orig_square)
+
+
 
 
 
 class PCA(Scene):
     def construct(self):
 
-        self.play(TitleCards(Tex("Principal component Analysis").scale(3).shift(2*UP)),run_time=2)
-
+        self.play(TitleCards(Tex("Principal component Analysis").scale(1.5).shift(2*UP)),run_time=2)
+        self.wait(3)
         # Try to create a visual reason to look at PCA. 
         # Go through an example with 3 points that 
         # highlight the reason for PCA. Show that 
         # singular values are needed here sometimes.
         pass
 
+
+class KernelPCA(Scene):
+    def construct(self):
+        self.play(TitleCards(Tex("Kernel PCA").scale(3).shift(2*UP)),run_time=2)
+
+
+
 class TitleCards(Animation):
 
     def begin(self) -> None:
         start = UL
         self.mobject.set_opacity(0)
+        self.mobject
         super().begin()
     
     def clean_up_from_scene(self, scene: Scene) -> None:

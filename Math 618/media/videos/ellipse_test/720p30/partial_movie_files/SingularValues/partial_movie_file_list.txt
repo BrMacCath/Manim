@@ -1,0 +1,11 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/brian/Manim/Math 618/media/videos/ellipse_test/720p30/partial_movie_files/SingularValues/2016333726_3290760996_4277594622.mp4'
+file 'file:C:/Users/brian/Manim/Math 618/media/videos/ellipse_test/720p30/partial_movie_files/SingularValues/543634251_3890345977_2967320986.mp4'
+file 'file:C:/Users/brian/Manim/Math 618/media/videos/ellipse_test/720p30/partial_movie_files/SingularValues/543634251_3890345977_3203941223.mp4'
+file 'file:C:/Users/brian/Manim/Math 618/media/videos/ellipse_test/720p30/partial_movie_files/SingularValues/543634251_3663571464_12197457.mp4'
+file 'file:C:/Users/brian/Manim/Math 618/media/videos/ellipse_test/720p30/partial_movie_files/SingularValues/543634251_3890345977_2406587538.mp4'
+file 'file:C:/Users/brian/Manim/Math 618/media/videos/ellipse_test/720p30/partial_movie_files/SingularValues/543634251_2821162123_1862999707.mp4'
+file 'file:C:/Users/brian/Manim/Math 618/media/videos/ellipse_test/720p30/partial_movie_files/SingularValues/543634251_3890345977_1921947792.mp4'
+file 'file:C:/Users/brian/Manim/Math 618/media/videos/ellipse_test/720p30/partial_movie_files/SingularValues/543634251_4211617699_3537727221.mp4'
+file 'file:C:/Users/brian/Manim/Math 618/media/videos/ellipse_test/720p30/partial_movie_files/SingularValues/543634251_139719818_3537727221.mp4'
+file 'file:C:/Users/brian/Manim/Math 618/media/videos/ellipse_test/720p30/partial_movie_files/SingularValues/543634251_4024902081_1440186541.mp4'

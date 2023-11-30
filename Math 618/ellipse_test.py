@@ -95,7 +95,7 @@ class EigenVectors(Scene):
         self.play(Create(lamMatrix.get_brackets()))
         
         self.wait(1)
-        self.play(FadeIn(lamMatrix))
+        self.play(FadeIn(lamMatrix.get_columns()))
         self.wait(1)
 
         self.play(height_1.animate.set_value(2))
@@ -135,13 +135,72 @@ class SingularValues(Scene):
         ## rotations and stretches. 
         self.remove(square,shear,ax,orig_square)
 
+        TempMatrix = MathTex(r"\begin{bmatrix}"
+                             r"a & b\\"
+                             r"c & d"
+                             r"\end{bmatrix}").shift(2*UP)
 
+        ax_1 = always_redraw(lambda: Axes(
+            x_length=4,
+            y_length=4,
+            axis_config={"include_ticks": False}
+        ).shift(-4*RIGHT-1*UP))
+        ax_2 = always_redraw(lambda: Axes(
+            x_length=4,
+            y_length=4,
+            axis_config={"include_ticks": False}
+        ).shift(4*RIGHT-1*UP))
 
+        self.play(FadeIn(ax_1),FadeIn(ax_2),FadeIn(TempMatrix))
+
+        self.wait(2)
+        height_1 = ValueTracker(1)
+        width_1 = ValueTracker(1)
+        lamMatrix = always_redraw(lambda:DecimalMatrix([[width_1.get_value(),0],[0,height_1.get_value()]]).shift(2*UP))
+        inputMat = Matrix([["u_1^T"],["u_2^T"]]).next_to(lamMatrix,direction=RIGHT)
+        outputMat = Matrix([["v_1"],["v_2"]]).next_to(lamMatrix,direction=LEFT)
+
+        self.play(FadeOut(TempMatrix))
+        self.play(FadeIn(lamMatrix.get_brackets()),FadeIn(inputMat.get_brackets()),FadeIn(outputMat.get_brackets()))
+
+        self.wait(3)
+        # Add Ellipses
+        angle_1 = ValueTracker(0)
+        angle_2 = ValueTracker(PI/8)
+        ellipse_1 = Ellipse(width=1.5, height=1.5).shift(ax_1.get_center())
+        ellipse_2 = always_redraw(lambda: Ellipse(width=1.5*width_1.get_value(), height=1.5*height_1.get_value()).rotate(angle=angle_2.get_value()).shift(ax_2.get_center()))
+        self.add(ellipse_1,ellipse_2)
+        self.wait(2)
+
+        in_1 = always_redraw(lambda: Line(ellipse_1.get_center(),end=ellipse_1.get_center()+[1.5*np.cos(angle_1.get_value())/2,1.5*np.sin(angle_1.get_value())/2,0]).add_tip())
+        in_2 =always_redraw(lambda: Line(ellipse_1.get_center(),end=ellipse_1.get_center()+[1.5*np.cos(PI/2 + angle_1.get_value())/2,1.5*np.sin(PI/2 + angle_1.get_value())/2,0]).add_tip())
+        self.wait(1)
+        self.play(FadeIn(in_1),FadeIn(in_2),FadeIn(inputMat.get_columns()),run_time=3)
+        self.wait(2)
+        self.play(angle_1.animate.set_value(PI/3))
+
+        # OutLocation()
+        outLocation_1 = always_redraw(lambda: Line(ellipse_2.get_center(),end=ellipse_2.get_center()+[1.5*width_1.get_value()*np.cos(angle_2.get_value())/2,1.5*width_1.get_value()*np.sin(angle_2.get_value())/2,0]).add_tip())
+        outLocation_2 = always_redraw(lambda: Line(ellipse_2.get_center(),end=ellipse_2.get_center()+[1.5*height_1.get_value()*np.cos(PI/2 + angle_2.get_value())/2,1.5*height_1.get_value()*np.sin(PI/2 + angle_2.get_value())/2,0]).add_tip())
+
+        out_1 = in_1.copy()
+        out_2 = in_2.copy()
+        self.add(out_1,out_2)
+        self.play(ReplacementTransform(out_1,outLocation_1),FadeIn(outputMat.get_rows()[0]))
+        self.wait(2)
+        self.play(FadeIn(lamMatrix.get_columns()[0]))
+        self.wait(3)
+        self.play(ReplacementTransform(out_2,outLocation_2),FadeIn(outputMat.get_rows()[1]))
+        self.wait(2)
+        self.play(FadeIn(lamMatrix.get_columns()[1]))
+        self.wait(1)
+        self.add(lamMatrix)
+        self.play(width_1.animate.set_value(3))
+        
 
 
 class PCA(Scene):
     def construct(self):
-
         self.play(TitleCards(Tex("Principal component Analysis").scale(1.5).shift(2*UP)),run_time=2)
         self.wait(3)
         # Try to create a visual reason to look at PCA. 
@@ -162,7 +221,6 @@ class TitleCards(Animation):
     def begin(self) -> None:
         start = UL
         self.mobject.set_opacity(0)
-        self.mobject
         super().begin()
     
     def clean_up_from_scene(self, scene: Scene) -> None:

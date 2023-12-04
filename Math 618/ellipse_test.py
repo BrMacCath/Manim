@@ -5,6 +5,7 @@ from manim.mobject.mobject import Mobject
 from manim.scene.scene import Scene
 from manim.utils.rate_functions import smooth
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 # This will just introduce our problem. Its purpose is to 
@@ -196,13 +197,71 @@ class SingularValues(Scene):
         self.wait(1)
         self.add(lamMatrix)
         self.play(width_1.animate.set_value(3))
-        
-
 
 class PCA(Scene):
     def construct(self):
         self.play(TitleCards(Tex("Principal component Analysis").scale(1.5).shift(2*UP)),run_time=2)
         self.wait(3)
+        # Plot some points in a linear way
+        # def func(x):
+        #     ans = .5*x + np.random.random_sample()
+        #     return ans
+        
+        # xs = np.linspace(-4,4, num=100)
+        # ys = [func(x) for x in xs]
+        arr_loaded = np.load('lineData.npy')
+        xs = arr_loaded[0]
+        ys = arr_loaded[1]
+
+        ax = Axes(
+            x_range=[-5,5],
+            y_range=[-5,5]
+        )
+
+        Dots =  VGroup(*[
+        Dot(ax.c2p(x,y+.7)) for x,y in zip(xs,ys)])
+
+        Dots2 =  VGroup(*[
+        always_redraw(lambda:Dot(point=ax.c2p(x,y-.1) + ax.get_origin()))  for x,y in zip(xs,ys)])
+
+        self.add(ax)
+        self.wait(2)
+        self.add(ax,Dots)
+        self.wait(2)
+        self.play(Transform(Dots,Dots2))
+        self.wait(3)
+
+        vector_svd = always_redraw(lambda: Line(start=ax.get_origin(),end = ax.get_origin()+[1,.4,0],color="green").add_tip())
+        self.play(Create(vector_svd))
+        self.wait(3)
+
+        # Covariance matrix.
+        self.play(FadeOut(ax),FadeOut(vector_svd), FadeOut(Dots))
+
+        self.wait(2)
+
+        self.play(TitleCards(Tex("Inner Products").scale(1.5).shift(2*UP)),run_time=2)
+        samples = Tex("X").shift(1*UP)
+        innerProducts = Tex(r"$X^T$ $X$")
+        VarianceMatrix = Tex(r"$\frac{1}{n}\cdot$ $X^TX$ ").shift(1*DOWN)
+
+        self.play(Create(samples)) 
+        self.wait(2)
+        self.play(Create(innerProducts))
+        self.wait(2)
+        self.play(Create(VarianceMatrix))
+        self.wait(2)
+        self.play(FadeOut(samples,innerProducts,VarianceMatrix))
+
+        # Talk about naive basis. How you can collect data.
+
+
+        # Change basis vectors
+
+
+        # Talk about cases where it goes wrong.
+
+
         # Try to create a visual reason to look at PCA. 
         # Go through an example with 3 points that 
         # highlight the reason for PCA. Show that 
@@ -213,13 +272,134 @@ class PCA(Scene):
 class KernelPCA(Scene):
     def construct(self):
         self.play(TitleCards(Tex("Kernel PCA").scale(3).shift(2*UP)),run_time=2)
+        ax = Axes(
+            x_range=[-6,6],
+            y_range=[-6,6]
+        )
+        green = np.load("greenCirc.npy")
+        Green_Dots =  VGroup(*[
+        Dot(ax.c2p(point[0],point[1]),color="green")  for point in green])
+        red = np.load("redCirc.npy")
+        Red_Dots =  VGroup(*[
+        Dot(ax.c2p(point[0],point[1]),color="red")  for point in red])
+        blue = np.load("blueCirc.npy")
+        Blue_Dots =  VGroup(*[
+        Dot(ax.c2p(point[0],point[1]),color="blue")  for point in blue])
+
+        self.add(ax)
+        self.wait(2)
+        self.add(Green_Dots)
+        self.wait(2)
+        self.add(Red_Dots)
+        self.wait(1)
+        self.add(Blue_Dots)
+        self.wait(1)
+
+        self.play(FadeOut(Blue_Dots),FadeOut(Green_Dots),FadeOut(Red_Dots),FadeOut(ax))
+
+        Problems = Tex("Problems").shift(2*UP)
+        non_linear = Tex("1. Non Linear").align_on_border(LEFT).shift(1*UP + 2.5*RIGHT)
+        not_centered = Tex("2. Not Centered on the origin").align_on_border(LEFT).shift( 2.5*RIGHT)
+        self.wait(1)
+        self.play(Create(Problems))
+        self.wait(1)
+        self.play(Create(non_linear))
+        self.wait(1) 
+        self.play(Create(not_centered))
+        self.wait(1)
+        self.play(FadeOut(Problems,non_linear,not_centered))
+
+        solution = Tex("Solution?").shift(2*UP)
+        change_inner= Tex("Change inner Product").shift(1*UP)
+        replace = Tex("Change $x\cdot y$ with $k(x,y)$")
+        note = Tex("Note: New Space").shift(1*DOWN)
+        note_2 = Tex("Note: New center").shift(2*DOWN)
+        self.play(Create(solution))
+        self.wait(1)
+        self.play(Create(change_inner))
+        self.wait(1)
+        self.play(Create(replace))
+        self.wait(1)
+        self.play(Create(note))
+        self.wait(1)
+        self.play(Create(note_2))
+        self.wait(1)
+        self.play(FadeOut(solution,change_inner,replace,note,note_2))
+        self.wait(1)
+        kerMatTex = Tex("Kernel Matrix").shift(2*UP)
+        kerMatOriginal = MathTex(r"\begin{bmatrix}"
+                                 r"\langle \Phi(x_i) , \Phi(x_j)\rangle"
+                                 r"\end{bmatrix}_{ij}")  
+        kerMatKer =    MathTex(r"\begin{bmatrix}"
+                                 r"k(x_i,x_j)"
+                                 r"\end{bmatrix}_{ij}")                             
+        self.play(FadeIn(kerMatTex))
+        self.play(FadeIn(kerMatOriginal)) 
+
+        self.play(FadeOut(kerMatTex,kerMatOriginal))
+
+
+
+        self.wait(1)
+
+        ax = Axes(
+            x_range=[-6,6],
+            y_range=[-6,6]
+        ).scale(.5).shift(3.5*LEFT)
+        green = np.load("greenCirc.npy")
+        Green_Dots =  VGroup(*[
+        Dot(ax.c2p(point[0],point[1]),color="green")  for point in green])
+        red = np.load("redCirc.npy")
+        Red_Dots =  VGroup(*[
+        Dot(ax.c2p(point[0],point[1]),color="red")  for point in red])
+        blue = np.load("blueCirc.npy")
+        Blue_Dots =  VGroup(*[
+        Dot(ax.c2p(point[0],point[1]),color="blue")  for point in blue])
+        self.play(FadeIn(ax,Green_Dots,Red_Dots,Blue_Dots))
+
+        self.wait(1)
+        ax_2 = Axes(
+            x_range=[-6,6],
+            y_range=[-6,6],
+        ).scale(.5).shift(3.5*RIGHT)
+        labels = ax_2.get_axis_labels(
+            Text("1st principal ").scale(0.45), Text("2cd principal").scale(0.45)
+        )
+        self.add(ax_2,labels)
+        self.wait(2)
+
+        xs = np.linspace(-6,6, num=100)
+        Green_Dots_2 =  VGroup(*[
+        Dot(ax_2.c2p(1,xs[i]),color="green")  for i in range(0,100)])
+        Red_Dots_2 =  VGroup(*[
+        Dot(ax_2.c2p(2,xs[i]),color="red")  for  i in range(0,100)])
+        blue = np.load("blueCirc.npy")
+        Blue_Dots_2 =  VGroup(*[
+        Dot(ax_2.c2p(3,xs[i]),color="blue")  for i in range(0,100)])
+
+        temp_Green = Green_Dots.copy()
+        temp_red = Red_Dots.copy()
+        temp_blue = Blue_Dots.copy()
+        self.add(temp_blue,temp_Green,temp_red)
+
+        self.play(ReplacementTransform(temp_Green,Green_Dots_2),runtime=4)
+        self.wait(1)
+        self.play(ReplacementTransform(temp_red,Red_Dots_2),runtime=4)
+        self.wait(1)
+        self.play(ReplacementTransform(temp_blue,Blue_Dots_2),runtime=4)
+        self.wait(1)
+        
+        
+        self.wait(1)
+
+
+
 
 
 
 class TitleCards(Animation):
 
     def begin(self) -> None:
-        start = UL
         self.mobject.set_opacity(0)
         super().begin()
     

@@ -56,7 +56,6 @@ class EigenVectors(Scene):
         lamMatrix = always_redraw(lambda:DecimalMatrix([[height_1.get_value(),0],[0,width_1.get_value()]]).shift(2*UP))
         inputMat = Matrix([["v_1^T"],["v_2^T"]]).next_to(lamMatrix,direction=RIGHT)
         outputMat = Matrix([["v_1"],["v_2"]]).next_to(lamMatrix,direction=LEFT)
-        columns = lamMatrix.get_columns()
 
         TempMatrix = MathTex(r"\begin{bmatrix}"
                              r"a & b\\"
@@ -122,15 +121,17 @@ class SingularValues(Scene):
         square.shift(square.get_left()*LEFT + square.get_bottom()*DOWN)
         orig_square = square.copy()
         self.add(ax)
-        self.wait(1)
+        self.wait(2)
         self.add(square)
-        self.wait(1)
+        self.wait(2)
         self.play(Rotate(square,angle=PI/4,about_point=ax.get_origin()))
-        self.wait(1)
+        self.wait(2)
         self.play(Rotate(square,angle=-PI/4,about_point=ax.get_origin()))
-        self.wait(1)
+        self.wait(2)
         self.play(Transform(square,shear))
+        self.wait(2)
         self.play(Transform(square,orig_square))
+        self.wait(2)
         self.play(FadeOut(ax,square))
         ## Then a scene where we can go through an easy example involving
         ## rotations and stretches. 
@@ -243,15 +244,17 @@ class PCA(Scene):
         self.play(TitleCards(Tex("Inner Products").scale(1.5).shift(2*UP)),run_time=2)
         samples = Tex("X").shift(1*UP)
         innerProducts = Tex(r"$X^T$ $X$")
-        VarianceMatrix = Tex(r"$\frac{1}{n}\cdot$ $X^TX$ ").shift(1*DOWN)
+        MatOriginal = MathTex(r"\begin{bmatrix}"
+                                 r"\langle x_i , x_j\rangle"
+                                 r"\end{bmatrix}_{ij}").shift(1*DOWN)
 
         self.play(Create(samples)) 
         self.wait(2)
         self.play(Create(innerProducts))
         self.wait(2)
-        self.play(Create(VarianceMatrix))
+        self.play(Create(MatOriginal))
         self.wait(2)
-        self.play(FadeOut(samples,innerProducts,VarianceMatrix))
+        self.play(FadeOut(samples,innerProducts,MatOriginal))
 
         # Talk about naive basis. How you can collect data.
 
@@ -288,12 +291,9 @@ class KernelPCA(Scene):
 
         self.add(ax)
         self.wait(2)
-        self.add(Green_Dots)
-        self.wait(2)
-        self.add(Red_Dots)
-        self.wait(1)
-        self.add(Blue_Dots)
-        self.wait(1)
+        self.play(FadeIn(Green_Dots,Red_Dots,Blue_Dots))
+
+        self.wait(5)
 
         self.play(FadeOut(Blue_Dots),FadeOut(Green_Dots),FadeOut(Red_Dots),FadeOut(ax))
 
@@ -302,16 +302,16 @@ class KernelPCA(Scene):
         not_centered = Tex("2. Not Centered on the origin").align_on_border(LEFT).shift( 2.5*RIGHT)
         self.wait(1)
         self.play(Create(Problems))
-        self.wait(1)
+        self.wait(2)
         self.play(Create(non_linear))
-        self.wait(1) 
+        self.wait(2) 
         self.play(Create(not_centered))
         self.wait(1)
         self.play(FadeOut(Problems,non_linear,not_centered))
 
         solution = Tex("Solution?").shift(2*UP)
         change_inner= Tex("Change inner Product").shift(1*UP)
-        replace = Tex("Change $x\cdot y$ with $k(x,y)$")
+        replace = Tex("Replace $ \langle x, y $" r"$ \rangle$ with $k(x,y)$")
         note = Tex("Note: New Space").shift(1*DOWN)
         note_2 = Tex("Note: New center").shift(2*DOWN)
         self.play(Create(solution))
@@ -329,12 +329,15 @@ class KernelPCA(Scene):
         kerMatTex = Tex("Kernel Matrix").shift(2*UP)
         kerMatOriginal = MathTex(r"\begin{bmatrix}"
                                  r"\langle \Phi(x_i) , \Phi(x_j)\rangle"
-                                 r"\end{bmatrix}_{ij}")  
-        kerMatKer =    MathTex(r"\begin{bmatrix}"
+                                 r"\end{bmatrix}_{ij   }")  
+        kerMatKer =  MathTex(r"\begin{bmatrix}"
                                  r"k(x_i,x_j)"
                                  r"\end{bmatrix}_{ij}")                             
         self.play(FadeIn(kerMatTex))
-        self.play(FadeIn(kerMatOriginal)) 
+        self.play(FadeIn(kerMatOriginal))
+
+        self.wait(3)
+        self.play(Transform(kerMatOriginal,kerMatKer))
 
         self.play(FadeOut(kerMatTex,kerMatOriginal))
 
@@ -388,9 +391,7 @@ class KernelPCA(Scene):
         self.wait(1)
         self.play(ReplacementTransform(temp_blue,Blue_Dots_2),runtime=4)
         self.wait(1)
-        
-        
-        self.wait(1)
+
 
 
 

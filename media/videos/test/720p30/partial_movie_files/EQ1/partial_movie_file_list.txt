@@ -1,0 +1,6 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/brian/Manim/media/videos/test/720p30/partial_movie_files/EQ1/2016333726_1665273717_223132457.mp4'
+file 'file:C:/Users/brian/Manim/media/videos/test/720p30/partial_movie_files/EQ1/543634251_1959358871_929113228.mp4'
+file 'file:C:/Users/brian/Manim/media/videos/test/720p30/partial_movie_files/EQ1/543634251_1413958803_4227516557.mp4'
+file 'file:C:/Users/brian/Manim/media/videos/test/720p30/partial_movie_files/EQ1/543634251_4059779016_4227516557.mp4'
+file 'file:C:/Users/brian/Manim/media/videos/test/720p30/partial_movie_files/EQ1/543634251_1959358871_1442265498.mp4'
